@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel de Produtos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Gerenciar Produtos</h1>
+
+    <div class="formulario">
+      <input type="text" id="nomeProduto" placeholder="Nome do Produto" />
+      <input type="number" id="precoProduto" placeholder="Preço" />
+      <button onclick="adicionarProduto()">Adicionar Produto</button>
+    </div>
+
+    <h2>Lista de Produtos</h2>
+    <ul id="listaProdutos"></ul>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

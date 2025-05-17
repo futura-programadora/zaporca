@@ -1,4 +1,4 @@
-const numeroWhatsApp = "11951182656"; // Ex: "11951182656"
+const numeroWhatsApp = "SEU_NUMERO_AQUI"; // Ex: "11999999999"
 
 function enviarPedido() {
   const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
@@ -6,11 +6,16 @@ function enviarPedido() {
   const obs = document.getElementById('observacoes').value.trim();
 
   if (!nome) {
-    alert("Por favor, preencha seu nome.");
+    alert("Digite seu nome para continuar.");
     return;
   }
 
-  let mensagem = `Olá, meu nome é ${nome}. Gostaria de solicitar:\n`;
+  if (checkboxes.length === 0) {
+    alert("Selecione ao menos um item.");
+    return;
+  }
+
+  let mensagem = `Olá, meu nome é ${nome} e gostaria de fazer um pedido:\n`;
   let total = 0;
 
   checkboxes.forEach(item => {
@@ -18,19 +23,17 @@ function enviarPedido() {
     total += parseFloat(item.dataset.price);
   });
 
-  if (checkboxes.length === 0) {
-    alert("Selecione pelo menos um item.");
-    return;
-  }
-
   mensagem += `\nTotal: R$${total.toFixed(2)}`;
-  if (obs) mensagem += `\n\nObservações: ${obs}`;
+
+  if (obs) {
+    mensagem += `\n\nObservações: ${obs}`;
+  }
 
   const link = `https://wa.me/55${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
   window.open(link, "_blank");
 }
 
-// Atualização dinâmica do total
+// Atualiza o valor total dinamicamente
 const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 checkboxes.forEach(box => {
   box.addEventListener('change', () => {

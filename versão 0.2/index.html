@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZapOrça - Sistema de Pedidos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>ZapOrça</h1>
+      <p>Monte seu pedido com agilidade e praticidade</p>
+    </header>
+
+    <section class="produtos">
+      <h2>Escolha seus itens:</h2>
+      <div class="cards">
+        <label class="card">
+          <input type="checkbox" value="Produto A - R$15" data-price="15">
+          <span>Produto A</span>
+          <small>R$15,00</small>
+        </label>
+
+        <label class="card">
+          <input type="checkbox" value="Serviço B - R$25" data-price="25">
+          <span>Serviço B</span>
+          <small>R$25,00</small>
+        </label>
+
+        <label class="card">
+          <input type="checkbox" value="Item C - R$35" data-price="35">
+          <span>Item C</span>
+          <small>R$35,00</small>
+        </label>
+      </div>
+    </section>
+
+    <section class="formulario">
+      <input type="text" id="nomeCliente" placeholder="Seu nome">
+      <textarea id="observacoes" placeholder="Observações (opcional)"></textarea>
+    </section>
+
+    <section class="resumo">
+      <span>Total:</span>
+      <strong>R$ <span id="total">0.00</span></strong>
+    </section>
+
+    <button onclick="enviarPedido()">Enviar Pedido via WhatsApp</button>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 ZapOrça - Sistema Personalizável de Pedidos</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -10,18 +10,26 @@
   <div class="container">
     <h1>Monte seu Pedido</h1>
 
-    <div class="produto">
-      <label><input type="checkbox" value="Brownie - R$5" data-price="5"> Brownie - R$5</label>
-      <label><input type="checkbox" value="Copo da Felicidade - R$10" data-price="10"> Copo da Felicidade - R$10</label>
-      <label><input type="checkbox" value="Kit Festa - R$50" data-price="50"> Kit Festa - R$50</label>
+    <div class="produtos">
+      <label><input type="checkbox" value="Produto 1 - R$10" data-price="10"> Produto 1 - R$10</label>
+      <label><input type="checkbox" value="Produto 2 - R$20" data-price="20"> Produto 2 - R$20</label>
+      <label><input type="checkbox" value="Serviço 3 - R$30" data-price="30"> Serviço 3 - R$30</label>
     </div>
 
-    <input type="text" id="nomeCliente" placeholder="Seu nome">
-    <textarea id="observacoes" placeholder="Alguma observação?"></textarea>
+    <input type="text" id="nomeCliente" placeholder="Seu nome completo">
+    <textarea id="observacoes" placeholder="Alguma observação? (opcional)"></textarea>
 
-    <p>Total: R$ <span id="total">0</span></p>
-    <button onclick="enviarPedido()">Pedir no WhatsApp</button>
+    <div class="resumo">
+      <span>Total:</span>
+      <strong>R$ <span id="total">0.00</span></strong>
+    </div>
+
+    <button onclick="enviarPedido()">Pedir via WhatsApp</button>
   </div>
+
+  <footer>
+    <p>&copy; 2025 ZapOrça. Todos os direitos reservados.</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
