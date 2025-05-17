@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedido via WhatsApp</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>Monte seu Pedido</h1>
+    <div id="produtos" class="produto"></div>
+    <input type="text" id="nomeCliente" placeholder="Seu nome" />
+    <textarea id="observacoes" placeholder="Alguma observação?"></textarea>
+    <p>Total: R$ <span id="total">0</span></p>
+    <button onclick="enviarPedido()">Pedir no WhatsApp</button>
+  </div>
+
+  <script>
+    let produtosSelecionados = [];
+    let total = 0;
+
+    function atualizarTotal() {
+      total = produtosSelecionados.reduce(function (soma, p) {
+        return soma + p.preco;
+      }, 0);
+      document.getElementById("total").innerText = total.toFixed(2);
+    }
+
+    function carregarProdutos() {
+      fetch('http://localhost:3001/produtos')
+        .then(function (res) { return res.json(); })
+        .then(function (produtos) {
+          const container = document.getElementById("produtos");
+          produtos.forEach(function (produto) {
+            const label = document.createElement("label");
+            label.innerHTML =
+              '<input type="checkbox" data-nome="' + produto.nome + '" data-preco="' + produto.preco + '" onchange="selecionarProduto(this)"> ' +
+              produto.nome + ' - R$' + produto.preco;
+            container.appendChild(label);
+          });
+        })
+        .catch(function (err) {
+          console.error("Erro ao carregar produtos:", err);
+        });
+    }
+
+    function selecionarProduto(input) {
+      const nome = input.dataset.nome;
+      const preco = parseFloat(input.dataset.preco);
+
+      if (input.checked) {
+        produtosSelecionados.push({ nome: nome, preco: preco });
+      } else {
+        produtosSelecionados = produtosSelecionados.filter(function (p) {
+          return p.nome !== nome;
+        });
+      }
+      atualizarTotal();
+    }
+
+    function enviarPedido() {
+      const nome = document.getElementById("nomeCliente").value.trim();
+      const obs = document.getElementById("observacoes").value.trim();
+
+      if (!nome) {
+        alert("Digite seu nome!");
+        return;
+      }
+
+      if (produtosSelecionados.length === 0) {
+        alert("Selecione pelo menos um produto.");
+        return;
+      }
+
+      let mensagem = "Olá, meu nome é " + nome + "! Quero fazer um pedido:\n";
+      produtosSelecionados.forEach(function (p) {
+        mensagem += "• " + p.nome + " - R$" + p.preco + "\n";
+      });
+      mensagem += "\nTotal: R$" + total.toFixed(2);
+      if (obs) mensagem += "\nObservações: " + obs;
+
+      const numero = "11951182656"; // Coloque seu número aqui
+      const link = "https://wa.me/55" + numero + "?text=" + encodeURIComponent(mensagem);
+      window.open(link, "_blank");
+    }
+
+    // Executa o carregamento dos produtos quando a página carregar
+    window.onload = carregarProdutos;
+  </script>
+</body>
+
+</html>

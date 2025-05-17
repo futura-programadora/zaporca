@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Painel Admin</title>
+  <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      align-items: flex-start;
+    }
+    .container {
+      background: #fff;
+      border-radius: 8px;
+      max-width: 480px;
+      width: 100%;
+      padding: 30px 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin-bottom: 24px;
+      font-weight: 700;
+      color: #222;
+      text-align: center;
+    }
+    #formContainer {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    #formContainer input[type="text"],
+    #formContainer input[type="number"] {
+      flex: 1 1 150px;
+      padding: 10px 14px;
+      font-size: 1rem;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      transition: border-color 0.2s ease;
+    }
+    #formContainer input[type="text"]:focus,
+    #formContainer input[type="number"]:focus {
+      border-color: #0052cc;
+      outline: none;
+    }
+    #formContainer button {
+      background-color: #0052cc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      flex: 0 0 auto;
+    }
+    #formContainer button:hover {
+      background-color: #003d99;
+    }
+    ul#listaProdutos {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 30px 0;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #fafafa;
+    }
+    ul#listaProdutos li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid #e1e1e1;
+      font-size: 1rem;
+      color: #444;
+    }
+    ul#listaProdutos li:last-child {
+      border-bottom: none;
+    }
+    ul#listaProdutos li button {
+      background-color: #e55353;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      padding: 6px 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 0.9rem;
+    }
+    ul#listaProdutos li button:hover {
+      background-color: #b03434;
+    }
+    button#salvarProdutosBtn {
+      display: block;
+      width: 100%;
+      padding: 14px 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 6px;
+      border: none;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button#salvarProdutosBtn:hover {
+      background-color: #1e7e34;
+    }
+    /* Scrollbar estilizada para lista */
+    ul#listaProdutos::-webkit-scrollbar {
+      width: 8px;
+    }
+    ul#listaProdutos::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 6px;
+    }
+    ul#listaProdutos::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 6px;
+    }
+    ul#listaProdutos::-webkit-scrollbar-thumb:hover {
+      background: #a0a0a0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Painel Admin - Produtos</h1>
+    <div id="formContainer">
+      <input type="text" id="nomeProduto" placeholder="Nome do produto" />
+      <input type="number" id="precoProduto" placeholder="Preço" step="0.01" />
+      <button onclick="adicionarProduto()">Adicionar</button>
+    </div>
+
+    <ul id="listaProdutos"></ul>
+
+    <button id="salvarProdutosBtn" onclick="salvarProdutos()">Salvar Produtos</button>
+  </div>
+
+  <script>
+    let produtos = [];
+
+    // Carrega produtos do backend quando abrir a página
+    window.onload = () => {
+      fetch('http://localhost:3001/produtos')
+        .then(res => res.json())
+        .then(data => {
+          produtos = data || [];
+          renderizarLista();
+        })
+        .catch(() => {
+          produtos = [];
+          renderizarLista();
+        });
+    };
+
+    function adicionarProduto() {
+      const nome = document.getElementById('nomeProduto').value.trim();
+      const preco = parseFloat(document.getElementById('precoProduto').value);
+
+      if (!nome || isNaN(preco)) {
+        alert("Preencha corretamente nome e preço.");
+        return;
+      }
+
+      produtos.push({ nome: nome, preco: preco });
+      renderizarLista();
+
+      // Limpa os campos
+      document.getElementById('nomeProduto').value = "";
+      document.getElementById('precoProduto').value = "";
+    }
+
+    function renderizarLista() {
+      const lista = document.getElementById('listaProdutos');
+      lista.innerHTML = '';
+
+      produtos.forEach((p, index) => {
+        const item = document.createElement('li');
+        item.textContent = `${p.nome} - R$${p.preco.toFixed(2)}`;
+
+        const btn = document.createElement('button');
+        btn.textContent = 'Remover';
+        btn.onclick = () => {
+          produtos.splice(index, 1);
+          renderizarLista();
+        };
+
+        item.appendChild(btn);
+        lista.appendChild(item);
+      });
+    }
+
+    function salvarProdutos() {
+      fetch('http://localhost:3001/produtos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(produtos)
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Erro na resposta do servidor');
+        return response.text();
+      })
+      .then(text => alert(text))
+      .catch(() => alert("Erro ao salvar. Verifique se o backend está rodando."));
+    }
+  </script>
+</body>
+</html>
