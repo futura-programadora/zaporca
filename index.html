@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZapOrça - Pedido via WhatsApp</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Monte seu Pedido</h1>
+
+    <div class="produto">
+      <label><input type="checkbox" value="Brownie - R$5" data-price="5"> Brownie - R$5</label>
+      <label><input type="checkbox" value="Copo da Felicidade - R$10" data-price="10"> Copo da Felicidade - R$10</label>
+      <label><input type="checkbox" value="Kit Festa - R$50" data-price="50"> Kit Festa - R$50</label>
+    </div>
+
+    <input type="text" id="nomeCliente" placeholder="Seu nome">
+    <textarea id="observacoes" placeholder="Alguma observação?"></textarea>
+
+    <p>Total: R$ <span id="total">0</span></p>
+    <button onclick="enviarPedido()">Pedir no WhatsApp</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
